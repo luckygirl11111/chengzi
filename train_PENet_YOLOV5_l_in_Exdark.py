@@ -13,13 +13,13 @@ import torch.nn as nn
 import torch.optim as optim
 from thop import profile
 from torch.utils.data import DataLoader
-from utils.utils import get_lr
-from nets.yolo_PENet import YoloBody
-from nets.yolo_training import (ModelEMA, YOLOLoss, get_lr_scheduler,
+from utils import get_lr
+from yolo_PENet import YoloBody
+from yolo_training import (ModelEMA, YOLOLoss, get_lr_scheduler,
                                 set_optimizer_lr, weights_init)
-from utils.callbacks import EvalCallback, LossHistory
-from utils.dataloader import YoloDataset, yolo_dataset_collate
-from utils.utils import (download_weights, get_anchors, get_classes,
+from callbacks import EvalCallback, LossHistory
+from dataloader import YoloDataset, yolo_dataset_collate
+from utils import (download_weights, get_anchors, get_classes,
                          seed_everything, show_config, worker_init_fn)
 from utils.utils_fit import fit_one_epoch
 os.environ['CUDA_VISIBLE_DEVICES']='1'
@@ -48,7 +48,7 @@ nohup python train_PENet_YOLOV5_l_in_Exdark.py  > train_PENet_YOLOV5_l_in_Exdark
 if not os.path.exists('./log_YOLOV5l_in_Exdark'):
     os.mkdir('./log_YOLOV5l_in_Exdark')
 
-model_save_dir='/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/saved_model_PENet_YOLOv5_l_in_ExDARK'
+model_save_dir='./saved_model_PENet_YOLOv5_l_in_ExDARK'
 if not os.path.isdir(model_save_dir):#train
     os.makedirs(model_save_dir)
 
@@ -88,12 +88,12 @@ if __name__ == "__main__":
     #   classes_path    指向model_data下的txt，与自己训练的数据集相关 
     #                   训练前一定要修改classes_path，使其对应自己的数据集
     #---------------------------------------------------------------------#
-    classes_path    = '/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/model_data/classes_Exdark.txt'
+    classes_path    = './classes_Exdark.txt'
     #---------------------------------------------------------------------#
     #   anchors_path    代表先验框对应的txt文件，一般不修改。
     #   anchors_mask    用于帮助代码找到对应的先验框，一般不修改。
     #---------------------------------------------------------------------#
-    anchors_path    = 'model_data/yolo_anchors.txt'
+    anchors_path    = './yolo_anchors.txt'
     anchors_mask    = [[6, 7, 8], [3, 4, 5], [0, 1, 2]]
     #----------------------------------------------------------------------------------------------------------------------------#
     #   权值文件的下载请看README，可以通过网盘下载。模型的 预训练权重 对不同数据集是通用的，因为特征是通用的。
@@ -114,7 +114,7 @@ if __name__ == "__main__":
     #      可以设置mosaic=True，直接随机初始化参数开始训练，但得到的效果仍然不如有预训练的情况。（像COCO这样的大数据集可以这样做）
     #   2、了解imagenet数据集，首先训练分类模型，获得网络的主干部分权值，分类模型的 主干部分 和该模型通用，基于此进行训练。
     #----------------------------------------------------------------------------------------------------------------------------#
-    model_path      = '/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/model_data/yolov5_l.pth'
+    model_path      = './yolov5_l.pth'
     #------------------------------------------------------#
     #   input_shape     输入的shape大小，一定要是32的倍数
     #------------------------------------------------------#
@@ -269,8 +269,8 @@ if __name__ == "__main__":
     #   train_annotation_path   训练图片路径和标签
     #   val_annotation_path     验证图片路径和标签
     #------------------------------------------------------#
-    train_annotation_path   = '/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/labels/Exdark_train.txt'
-    val_annotation_path     = '/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/labels/Exdark_val.txt'
+    train_annotation_path   = './Exdark_train.txt'
+    val_annotation_path     = './Exdark_val.txt'
 
     seed_everything(seed)
     #------------------------------------------------------#
@@ -539,7 +539,7 @@ if __name__ == "__main__":
         #----------------------#
         if local_rank == 0:
             eval_callback   = EvalCallback(model, input_shape, anchors, anchors_mask, class_names, num_classes, val_lines, log_dir, Cuda, \
-                                            eval_flag=eval_flag, period=eval_period,map_out_path='/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/log_YOLOV5l_in_Exdark/temp_map_out_PENet_YOLOv5_l')
+                                            eval_flag=eval_flag, period=eval_period,map_out_path='./log_YOLOV5l_in_Exdark/temp_map_out_PENet_YOLOv5_l')
         else:
             eval_callback   = None
         
