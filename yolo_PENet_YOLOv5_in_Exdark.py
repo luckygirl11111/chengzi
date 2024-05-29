@@ -8,10 +8,10 @@ import torch
 import torch.nn as nn
 from PIL import ImageDraw, ImageFont, Image
 
-from nets.yolo_PENet import YoloBody
-from utils.utils import (cvtColor, get_anchors, get_classes, preprocess_input,
+from yolo_PENet import YoloBody
+from utils import (cvtColor, get_anchors, get_classes, preprocess_input,
                          resize_image, show_config)
-from utils.utils_bbox import DecodeBox, DecodeBoxNP
+from utils_bbox import DecodeBox, DecodeBoxNP
 
 '''
 训练自己的数据集必看注释！
