@@ -78,8 +78,8 @@ if __name__ == "__main__":
     #   
     #   dir_origin_path和dir_save_path仅在mode='dir_predict'时有效
     #-------------------------------------------------------------------------#
-    dir_origin_path = "/export/yuanzhian/lujiajia/paper_code_1/object_detection_dataset/Exdark/ExDARk_YOLO3_training/images/test/"
-    dir_save_path   = "/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/test_result_PENet_YOLOv5_l_in_Exdark/"
+    dir_origin_path = "./object_detection_dataset/Exdark/ExDARk_YOLO3_training/images/test/"
+    dir_save_path   = "./low_light_object_detection/yolov5-pytorch-main/test_result_PENet_YOLOv5_l_in_Exdark/"
     
     #计算召回率和map
     test_annotation_path     = '/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/labels/Exdark_test.txt'
