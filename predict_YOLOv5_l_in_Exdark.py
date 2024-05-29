@@ -7,11 +7,11 @@ import torch
 import cv2
 import numpy as np
 from PIL import Image
-from utils.callbacks import  EvalCallback
+from callbacks import  EvalCallback
 from yolo_YOLOv5_in_Exdark import YOLO, YOLO_ONNX
-from nets.yolo import YoloBody
+from yolo import YoloBody
 import os 
-from utils.utils import (get_anchors, get_classes)
+from utils import (get_anchors, get_classes)
 '''
 运行前要修改yolo_Exdark中的model_path和classes_path
 nohup python predict_YOLOv5_l_in_Exdark.py > test_YOLOv5_l_in_Exdark.out&
@@ -63,22 +63,22 @@ if __name__ == "__main__":
     #   
     #   dir_origin_path和dir_save_path仅在mode='dir_predict'时有效
     #-------------------------------------------------------------------------#
-    dir_origin_path = "/export/yuanzhian/lujiajia/paper_code_1/object_detection_dataset/Exdark/ExDARk_YOLO3_training/images/test/"
-    dir_save_path   = "/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/test_result_YOLOv5_l_in_Exdark/"
+    dir_origin_path = "./object_detection_dataset/Exdark/ExDARk_YOLO3_training/images/test/"
+    dir_save_path   = "./low_light_object_detection/yolov5-pytorch-main/test_result_YOLOv5_l_in_Exdark/"
     
     #计算召回率和map
-    test_annotation_path     = '/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/labels/Exdark_test.txt'
+    test_annotation_path     = './Exdark_test.txt'
     with open(test_annotation_path) as f:
         test_lines   = f.readlines()
-    log_dir='/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/log_YOLOV5l_in_Exdark/loss_test_YOLOv5_l'
+    log_dir='./log_YOLOV5l_in_Exdark/loss_test_YOLOv5_l'
     if not os.path.isdir(log_dir):#train
         os.makedirs(log_dir)
     #---------------------------------------------------#
     #   获得种类和先验框的数量
     #---------------------------------------------------#
-    model_path='/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/saved_model_YOLOv5_l_in_ExDARK/best_epoch_weights.pth'
-    classes_path= '/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/model_data/classes_Exdark.txt'
-    anchors_path='model_data/yolo_anchors.txt'
+    model_path='./saved_model_YOLOv5_l_in_ExDARK/best_epoch_weights.pth'
+    classes_path= './classes_Exdark.txt'
+    anchors_path='./yolo_anchors.txt'
     anchors_mask=[[6, 7, 8], [3, 4, 5], [0, 1, 2]]
     input_shape=[640, 640]
     class_names, num_classes  = get_classes(classes_path)
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     net.load_state_dict(torch.load(model_path, map_location=device),strict=False)
     net    = net.eval()
     eval_callback   = EvalCallback(net, input_shape, anchors, anchors_mask, class_names, num_classes, test_lines, log_dir, False, \
-                                            eval_flag=True, period=1,map_out_path='/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/log_YOLOV5l_in_Exdark/test_temp_map_out_YOLOv5_l')
+                                            eval_flag=True, period=1,map_out_path='.log_YOLOV5l_in_Exdark/test_temp_map_out_YOLOv5_l')
     #-------------------------------------------------------------------------#
     #   heatmap_save_path   热力图的保存路径，默认保存在model_data下
     #   
@@ -188,7 +188,7 @@ if __name__ == "__main__":
         img_names = os.listdir(dir_origin_path)
         for img_name in tqdm(img_names):
             if img_name.lower().endswith(('.JPEG', '.JPG', '.png', '.jpg', '.jpeg', '.pbm', '.pgm', '.ppm', '.tif', '.tiff')):
-                image_path  = os.path.join(dir_origin_path, img_name)#/home/lujiajia/paper_code_1/object_detection_dataset/Exdark/ExDARk_YOLO3_training/images/test/2015_06649.JPEG
+                image_path  = os.path.join(dir_origin_path, img_name)
                 print('--------------------------------图片路径------------------------------')
                 print(image_path)
                 image       = Image.open(image_path)
