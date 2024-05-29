@@ -26,13 +26,13 @@ class YOLO(object):
         #   验证集损失较低不代表mAP较高，仅代表该权值在验证集上泛化性能较好。
         #   如果出现shape不匹配，同时要注意训练时的model_path和classes_path参数的修改
         #--------------------------------------------------------------------------#
-        "model_path"        : '/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/saved_model_PENet_YOLOv5_l_in_ExDARK/best_epoch_weights.pth',
-        "classes_path"      : '/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/model_data/classes_Exdark.txt',
+        "model_path"        : './saved_model_PENet_YOLOv5_l_in_ExDARK/best_epoch_weights.pth',
+        "classes_path"      : './classes_Exdark.txt',
         #---------------------------------------------------------------------#
         #   anchors_path代表先验框对应的txt文件，一般不修改。
         #   anchors_mask用于帮助代码找到对应的先验框，一般不修改。
         #---------------------------------------------------------------------#
-        "anchors_path"      : '/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/model_data/yolo_anchors.txt',
+        "anchors_path"      : './yolo_anchors.txt',
         "anchors_mask"      : [[6, 7, 8], [3, 4, 5], [0, 1, 2]],
         #---------------------------------------------------------------------#
         #   输入图片的大小，必须为32的倍数。
