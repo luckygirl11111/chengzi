@@ -2,7 +2,7 @@ import os
 import random
 import xml.etree.ElementTree as ET
 import numpy as np
-from utils.utils import get_classes
+from utils import get_classes
 import glob
 """
 0代表整个标签处理过程，包括获得VOCdevkit/VOC2007/ImageSets里面的txt以及训练用的2007_train.txt、2007_val.txt
@@ -13,12 +13,12 @@ python voc_yolo_txt_Exdark_test.py
 """
 annotation_mode = 0
 # 仅在annotation_mode为0和2的时候有效
-classes_path = '/export/yuanzhian/lujiajia/paper_code_1/low_light_object_detection/yolov5-pytorch-main/model_data/classes_Exdark.txt'
+classes_path = './classes_Exdark.txt'
 # 仅在annotation_mode为0和1的时候有效
 # trainval_percent =0.9                  # 用于指定(训练集+验证集)与测试集的比例，默认情况下 (训练集+验证集):测试集 = 9:1
 # train_percent = 0.9                      # 用于指定(训练集+验证集)中训练集与验证集的比例，默认情况下 训练集:验证集 = 9:1
 
-VOCdevkit_path = '/export/yuanzhian/lujiajia/paper_code_1/object_detection_dataset/Exdark/ExDARk_YOLO3_training'
+VOCdevkit_path = './object_detection_dataset/Exdark/ExDARk_YOLO3_training'
 VOCdevkit_sets = [('Exdark', 'train'), ('Exdark', 'val'),('Exdark', 'test')]
 
 classes, _ = get_classes(classes_path)
@@ -28,8 +28,7 @@ nums = np.zeros(len(classes))
 #xml转换为txt格式
 def convert_annotation(image_set, image_id, list_file):
     # in_file = open(os.path.join(VOCdevkit_path, 'VOC%s/SegmentationClass/%s.xml' % (year, image_id)), encoding='utf-8')
-    txtfile=glob.glob(os.path.join('/export/yuanzhian/lujiajia/paper_code_1/object_detection_dataset/Exdark/ExDARk_YOLO3_training/labels/%s'%image_set, image_id+'*'))[0]
-    #/home/lujiajia/paper_code_1/object_detection_dataset/Exdark/ExDARk_YOLO3_training/labels/train/2015_01557.txt
+    txtfile=glob.glob(os.path.join('./object_detection_dataset/Exdark/ExDARk_YOLO3_training/labels/%s'%image_set, image_id+'*'))[0]
 
     with open(txtfile, 'r') as ftxt:
         lines = ftxt.readlines()
@@ -56,11 +55,11 @@ def convert_annotation(image_set, image_id, list_file):
 
 if __name__ == "__main__":
     random.seed(0)
-    train_annotation_path   = '/export/yuanzhian/lujiajia/paper_code_1/object_detection_dataset/Exdark/ExDARk_YOLO3_training/labels/train'
-    val_annotation_path     = '/export/yuanzhian/lujiajia/paper_code_1/object_detection_dataset/Exdark/ExDARk_YOLO3_training/labels/val'
-    train_img_path='/export/yuanzhian/lujiajia/paper_code_1/object_detection_dataset/Exdark/ExDARk_YOLO3_training/images/train'
-    val_img_path='/export/yuanzhian/lujiajia/paper_code_1/object_detection_dataset/Exdark/ExDARk_YOLO3_training/images/val'
-    test_img_path='/export/yuanzhian/lujiajia/paper_code_1/object_detection_dataset/Exdark/ExDARk_YOLO3_training/images/test'
+    train_annotation_path   = './object_detection_dataset/Exdark/ExDARk_YOLO3_training/labels/train'
+    val_annotation_path     = './object_detection_dataset/Exdark/ExDARk_YOLO3_training/labels/val'
+    train_img_path='./object_detection_dataset/Exdark/ExDARk_YOLO3_training/images/train'
+    val_img_path='./object_detection_dataset/Exdark/ExDARk_YOLO3_training/images/val'
+    test_img_path='./object_detection_dataset/Exdark/ExDARk_YOLO3_training/images/test'
     if " " in os.path.abspath(VOCdevkit_path):
         raise ValueError("数据集存放的文件夹路径与图片名称中不可以存在空格，否则会影响正常的模型训练，请注意修改。")
     if annotation_mode == 0 or annotation_mode == 1:#保存训练集、验证集、测试集txt
@@ -69,7 +68,7 @@ if __name__ == "__main__":
         image_name_test=os.listdir(test_img_path)
         image_name_val=os.listdir(val_img_path)
         # xmlfilepath     = os.path.join(VOCdevkit_path, 'VOC2007/Annotations')
-        saveBasePath    = '/export/yuanzhian/lujiajia/paper_code_1/object_detection_dataset/Exdark/ExDARk_YOLO3_training'
+        saveBasePath    = './object_detection_dataset/Exdark/ExDARk_YOLO3_training'
 
         num_train = len(image_name_train) 
         num_test=len(image_name_test) 
@@ -122,8 +121,8 @@ if __name__ == "__main__":
             
             list_file = open('%s_%s.txt' % (year, image_set), 'w', encoding='utf-8')
             for image_id in image_ids:
-                img_file_path = glob.glob(os.path.join('/export/yuanzhian/lujiajia/paper_code_1/object_detection_dataset/Exdark/ExDARk_YOLO3_training/images/%s'%image_set, image_id+'*'))[0]
-                #/home/lujiajia/paper_code_1/object_detection_dataset/Exdark/ExDARk_YOLO3_training/images/train/2015_01557.jpg
+                img_file_path = glob.glob(os.path.join('./object_detection_dataset/Exdark/ExDARk_YOLO3_training/images/%s'%image_set, image_id+'*'))[0]
+                
                 list_file.write(img_file_path)#图片的路径
                 convert_annotation(image_set, image_id, list_file)
                 list_file.write('\n')
